@@ -1,0 +1,105 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package app {
+
+    class App
+
+    package templates {
+
+        class index< <U+002F> >
+
+        class rules < <U+002F>rules >
+
+        class examples < <U+002F>examples>
+
+        class history < <U+002F>history>
+
+        class Game < <U+002F>game>
+
+        App --> index
+        App --> rules
+        App --> examples
+        App --> history
+        App --> Game
+    }
+
+    note top of templates: templates are html files
+
+    package src {
+
+        class Game {
+            + void startGame(Difficulty d)
+            + int playTurn(int playerAction)
+        }
+
+        class Algorithms {
+        }
+
+        package datastructure {
+
+            package tree {
+
+                class Tree {
+                    Node[] leafs
+                    + boolean isComplete()
+                    + void expend(int depth)
+                    + int isWinning()
+                    + void selectNextRoot(String state)
+                }
+
+                class Node {
+                    boolean isMax
+                    boolean isLeaf
+                    float e
+                    Node[] successors
+                    Node pred
+                    String state
+                }
+
+                Tree *--> "1..1 root" Node
+            }
+
+            class TreeManager {
+                + createTree(int depth)
+            }
+
+            class HexConstants {
+                dict caseNeighbours
+                int[] MaxStart
+                int[] MaxEnd
+                char NodeStateMax
+                char NodeStateMin
+                char NodeStateEmpty
+            }
+
+            TreeManager ..> Tree
+
+        }
+
+        Game ..> TreeManager
+        Game --> Algorithms
+        Game --> "1..1 state" GameState
+        Game *--> "1..1 tree" Tree
+        Game --> Difficulty
+
+        enum GameState {
+            UNSTARTED
+            STARTED
+            MAX_WINNER
+            MIN_WINNER
+        }
+
+        enum Difficulty {
+            EASY
+            MEDIUM
+            HARD
+        }
+
+    }
+
+    App --> src.Game
+
+}
+
+@enduml
