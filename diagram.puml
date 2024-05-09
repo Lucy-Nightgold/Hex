@@ -29,7 +29,6 @@ package app {
     package src {
 
         class Game {
-            + void startGame(Difficulty d)
             + int playTurn(int playerAction)
         }
 
@@ -81,11 +80,10 @@ package app {
         Game --> Algorithms
         Game --> "1..1 state" GameState
         Game *--> "1..1 tree" Tree
-        Game --> Difficulty
+        Game --> "1..1 difficulty" Difficulty
 
         enum GameState {
-            UNSTARTED
-            STARTED
+            UNFINISHED
             MAX_WINNER
             MIN_WINNER
         }
