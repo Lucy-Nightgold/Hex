@@ -67,6 +67,8 @@ package app {
                 dict caseNeighbours
                 int[] MaxStart
                 int[] MaxEnd
+                int[] MinStart
+                int[] MaxEnd
                 char NodeStateMax
                 char NodeStateMin
                 char NodeStateEmpty
