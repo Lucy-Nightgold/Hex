@@ -1,0 +1,15 @@
+services:
+  web:
+    build:
+      context: app
+      target: builder
+    # flask requires SIGINT to stop gracefully
+    # (default stop signal from Compose is SIGTERM)
+    stop_signal: SIGINT
+    command: bash -c "(flask run --host=0.0.0.0 &)
+        && npx tailwindcss -i ./static/src/input.css -o ./static/main.css --watch"
+    volumes:
+      - ./app:/app
+    ports:
+      - '8000:5000'
+    tty: true
