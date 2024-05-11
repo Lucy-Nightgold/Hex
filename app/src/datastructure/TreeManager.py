@@ -1,15 +1,16 @@
 import app.src.datastructure.HexConstants as HexConstants
+from app.src.GameState import GameState
 from app.src.datastructure.tree.Node import Node
 from app.src.datastructure.tree.Tree import Tree
 
 
 def expend_from_node(node, depth, tree):
     res = is_winning(node.state)
-    if res != HexConstants.UNFINISHED or depth == 0:
+    if res != GameState.UNFINISHED or depth == 0:
         tree.leafs.append(node)
         node.is_leaf = True
-        node.is_ending = res != HexConstants.UNFINISHED
-        node.e = 5 if res == HexConstants.MAX_WIN else -5 if res == HexConstants.MIN_WIN else 0
+        node.is_ending = res != GameState.UNFINISHED
+        node.e = 5 if res == GameState.MAX_WIN else -5 if res == GameState.MIN_WIN else 0
         return node
     successors_states = generate_next_node_state_list(node.state, 'm' if node.is_max else 'M')
     for state in successors_states:
@@ -61,8 +62,8 @@ def is_winning(state):
 
     for case in HexConstants.MAX_START:
         if evaluation([case], [], HexConstants.MAX_STOP):
-            return HexConstants.MAX_WIN
+            return GameState.MAX_WIN
     for case in HexConstants.MIN_START:
         if evaluation([case], [], HexConstants.MIN_STOP):
-            return HexConstants.MIN_WIN
-    return HexConstants.UNFINISHED
+            return GameState.MIN_WIN
+    return GameState.UNFINISHED

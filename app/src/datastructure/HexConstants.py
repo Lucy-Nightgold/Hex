@@ -7,9 +7,6 @@ CASES_NB = 121
 NODE_STATE_MAX = 'M'
 NODE_STATE_MIN = 'm'
 NODE_STATE_EMPTY = '_'
-MAX_WIN = 1
-MIN_WIN = -1
-UNFINISHED = 0
 
 
 def get_neighbours(c):
