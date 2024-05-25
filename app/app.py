@@ -22,6 +22,10 @@ class Controller:
             self.tree = generate_tree(difficulty.value)
             self.initiated_game = True
 
+    def end(self):
+        self.tree = None
+        self.initiated_game = False
+
 
 controller = Controller()
 
@@ -50,10 +54,16 @@ def history():
     return template.render()
 
 
-@app.route("/init/<difficulty>")
+@app.route("/game/init/<difficulty>")
 def init(difficulty):
     controller.initialize(difficulty)
     return game()
+
+
+@app.route("/game/end")
+def end():
+    controller.end()
+    return index()
 
 
 @app.route("/game")
@@ -62,7 +72,8 @@ def game():
         return index()
     template = env.get_template("game.html")
     return template.render(
-        state=controller.tree.root.state
+        game_state=controller.tree.root.state,
+        winning_state=controller.tree.is_winning()
     )
 
 
