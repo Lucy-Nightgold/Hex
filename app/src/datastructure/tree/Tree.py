@@ -1,7 +1,6 @@
-from app.src.GameState import GameState
-from app.src.datastructure import TreeManager
-from app.src.datastructure.TreeManager import is_winning, generate_next_node_state_list, expend_from_node
-from app.src.datastructure.tree.Node import Node
+from src.GameState import GameState
+import src.datastructure.TreeManager as TreeManager
+from src.datastructure.tree.Node import Node
 
 
 class Tree:
@@ -13,13 +12,13 @@ class Tree:
         if depth == 0:
             return
         for node in self.leafs:
-            res = is_winning(node.state)
+            res = TreeManager.is_winning(node.state)
             if res == GameState.UNFINISHED:
                 node.is_leaf = False
-                successors_states = generate_next_node_state_list(node.state, 'm' if node.is_max else 'M')
+                successors_states = TreeManager.generate_next_node_state_list(node.state, 'm' if node.is_max else 'M')
                 for state in successors_states:
                     child_node = Node(not node.is_max, False, 0, node, state)
-                    node.successors.append(expend_from_node(child_node, depth - 1, self))
+                    node.successors.append(TreeManager.expend_from_node(child_node, depth - 1, self))
 
     def is_winning(self):
         return TreeManager.is_winning(self.root.state)

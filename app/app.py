@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, Response, redirect
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from app.src.Game import Game
+from src.Game import Game
 
 env = Environment(
     loader=PackageLoader(__name__),
@@ -56,20 +56,20 @@ def history():
 @app.route("/game/init/<difficulty>")
 def init(difficulty):
     controller.initialize(difficulty)
-    return game()
+    return redirect(game())
 
 
 @app.route("/game/end")
 def end():
     controller.end()
-    return index()
+    return redirect(index())
 
 
 @app.route("/game/restart/<difficulty>")
 def restart(difficulty):
     controller.end()
     controller.initialize(difficulty)
-    return game()
+    return redirect(game())
 
 
 @app.route("/game")

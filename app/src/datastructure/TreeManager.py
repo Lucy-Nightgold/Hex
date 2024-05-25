@@ -1,7 +1,7 @@
-import app.src.datastructure.HexConstants as HexConstants
-from app.src.GameState import GameState
-from app.src.datastructure.tree.Node import Node
-from app.src.datastructure.tree.Tree import Tree
+import src.datastructure.HexConstants as HexConstants
+from src.GameState import GameState
+from src.datastructure.tree.Node import Node
+from src.datastructure.tree.Tree import Tree
 
 
 def expend_from_node(node, depth, tree):
