@@ -15,5 +15,11 @@ def index():
     return template.render()
 
 
+@app.route("/rules")
+def rules():
+    template = env.get_template("rules.html")
+    return template.render()
+
+
 if __name__ == "__main__":
     app.run(debug=True)
