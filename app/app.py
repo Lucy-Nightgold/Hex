@@ -66,6 +66,13 @@ def end():
     return index()
 
 
+@app.route("/game/restart/<difficulty>")
+def restart(difficulty):
+    controller.end()
+    controller.initialize(difficulty)
+    return game()
+
+
 @app.route("/game")
 def game():
     if not controller.initiated_game:
@@ -75,9 +82,6 @@ def game():
         game_state=controller.tree.root.state,
         winning_state=controller.tree.is_winning()
     )
-
-
-
 
 
 if __name__ == "__main__":
