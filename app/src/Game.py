@@ -1,6 +1,6 @@
-from app.src.GameState import GameState
-from app.src.datastructure.HexConstants import NODE_STATE_EMPTY
-from app.src.datastructure.TreeManager import generate_tree, is_winning
+from src.GameState import GameState
+from src.datastructure.HexConstants import NODE_STATE_EMPTY
+from src.datastructure.TreeManager import generate_tree, is_winning
 
 
 class Game:
