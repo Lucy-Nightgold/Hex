@@ -1,5 +1,5 @@
+from app.src.GameState import GameState
 from app.src.datastructure import TreeManager
-from app.src.datastructure.HexConstants import UNFINISHED
 from app.src.datastructure.TreeManager import is_winning, generate_next_node_state_list, expend_from_node
 from app.src.datastructure.tree.Node import Node
 
@@ -14,7 +14,7 @@ class Tree:
             return
         for node in self.leafs:
             res = is_winning(node.state)
-            if res == UNFINISHED:
+            if res == GameState.UNFINISHED:
                 node.is_leaf = False
                 successors_states = generate_next_node_state_list(node.state, 'm' if node.is_max else 'M')
                 for state in successors_states:
