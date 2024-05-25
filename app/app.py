@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, redirect, Response
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from app.src.Game import Game
-from app.src.datastructure.TreeManager import generate_tree
-from app.src.datastructure.tree.Tree import Tree
 
 env = Environment(
     loader=PackageLoader(__name__),
@@ -84,6 +82,8 @@ def game():
 
 @app.route("/game/play/<case>")
 def play(case):
+    if not controller.initiated_game:
+        return index()
     try:
         controller.game.play_turn(case)
     except Exception as e:
