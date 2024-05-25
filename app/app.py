@@ -21,5 +21,11 @@ def rules():
     return template.render()
 
 
+@app.route("/examples")
+def examples():
+    template = env.get_template("examples.html")
+    return template.render()
+
+
 if __name__ == "__main__":
     app.run(debug=True)
