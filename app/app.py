@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, Response
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from app.src.Game import Game
 from app.src.datastructure.TreeManager import generate_tree
 from app.src.datastructure.tree.Tree import Tree
 
@@ -14,16 +15,16 @@ app = Flask(__name__)
 
 class Controller:
     def __init__(self):
-        self.tree = None
+        self.game = None
         self.initiated_game = False
 
     def initialize(self, difficulty):
         if not self.initiated_game:
-            self.tree = generate_tree(difficulty.value)
+            self.game = Game(difficulty)
             self.initiated_game = True
 
     def end(self):
-        self.tree = None
+        self.game = None
         self.initiated_game = False
 
 
@@ -32,25 +33,25 @@ controller = Controller()
 
 @app.route("/")
 def index():
-    template = env.get_template("index.html")
+    template = env.get_template("index.html.j2")
     return template.render()
 
 
 @app.route("/rules")
 def rules():
-    template = env.get_template("rules.html")
+    template = env.get_template("rules.html.j2")
     return template.render()
 
 
 @app.route("/examples")
 def examples():
-    template = env.get_template("examples.html")
+    template = env.get_template("examples.html.j2")
     return template.render()
 
 
 @app.route("/history")
 def history():
-    template = env.get_template("history.html")
+    template = env.get_template("history.html.j2")
     return template.render()
 
 
@@ -77,10 +78,25 @@ def restart(difficulty):
 def game():
     if not controller.initiated_game:
         return index()
-    template = env.get_template("game.html")
+    template = env.get_template("game.html.j2")
+    return render_game()
+
+
+@app.route("/game/play/<case>")
+def play(case):
+    try:
+        controller.game.play_turn(case)
+    except Exception as e:
+        return Response(repr(e), 403)
+    else:
+        return render_game()
+
+
+def render_game():
+    template = env.get_template("game.html.j2")
     return template.render(
-        game_state=controller.tree.root.state,
-        winning_state=controller.tree.is_winning()
+        game_state=controller.game.tree.root.state,
+        winning_state=controller.game.state
     )
 
 
