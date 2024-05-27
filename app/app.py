@@ -1,7 +1,7 @@
 from flask import Flask, Response, redirect
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from src.Difficulty import Difficulty
+from src.Difficulty import Difficulty, get_difficulty_by_number
 from src.Game import Game
 
 env = Environment(
@@ -19,8 +19,7 @@ class Controller:
 
     def initialize(self, difficulty):
         if not self.initiated_game:
-            difficulty_enum = Difficulty[difficulty.upper()]
-            self.game = Game(difficulty_enum)
+            self.game = Game(difficulty)
             self.initiated_game = True
 
     def end(self):
@@ -57,21 +56,21 @@ def history():
 
 @app.route("/game/init/<difficulty>")
 def init(difficulty):
-    controller.initialize(difficulty)
-    return redirect(game())
+    controller.initialize(get_difficulty_by_number(difficulty))
+    return game()
 
 
 @app.route("/game/end")
 def end():
     controller.end()
-    return redirect(index())
+    return index()
 
 
 @app.route("/game/restart/<difficulty>")
 def restart(difficulty):
     controller.end()
-    controller.initialize(difficulty)
-    return redirect(game())
+    controller.initialize(get_difficulty_by_number(difficulty))
+    return game()
 
 
 @app.route("/game")
