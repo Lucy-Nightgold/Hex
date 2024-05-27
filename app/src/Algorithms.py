@@ -1,3 +1,6 @@
+from src.datastructure import HexConstants
+
+
 def minimax(node):
     if node.is_leaf:
         val = node.e
@@ -107,3 +110,49 @@ def sss(node):
                 g.insert(n.pred, False, e)
                 g.remove_by_successors(n.pred)
     return g.pop()[2]
+
+
+def AStar(state, start_case, end_cases):
+    #TODO
+    return 1.0
+
+
+def heuristic(node):
+    def is_connected_to_side(list1, list2, start_side, end_side):
+        if not list1:
+            return '_'
+        c = list1(0)
+        if c in start_side:
+            return 's'
+        if c in end_side:
+            return 'e'
+
+        def filter_neighbours(neighbour):
+            return neighbour not in list2 and node.state(c) == node.state(neighbour)
+
+        neighbours = filter(filter_neighbours, HexConstants.get_neighbours(c))
+        list2.append(list1.pop(0))
+        return is_connected_to_side(list1 + neighbours, list2, start_side, end_side)
+
+    if node.is_ending:
+        return 1.5 if node.is_max else -1.5
+    plus = 0
+    minus = 0
+    for i in range(HexConstants.CASES_NB):
+        if node.state[i] == HexConstants.NODE_STATE_MAX:
+            side = is_connected_to_side([i], [], HexConstants.MAX_START, HexConstants.MAX_STOP)
+            if side == 's':
+                dist = AStar(node.state, i, HexConstants.MAX_STOP)
+                plus = max(plus, 1 / dist)
+            elif side == 'e':
+                dist = AStar(node.state, i, HexConstants.MAX_START)
+                plus = max(plus, 1 / dist)
+        if node.state[i] == HexConstants.NODE_STATE_MIN:
+            side = is_connected_to_side([i], [], HexConstants.MIN_START, HexConstants.MIN_STOP)
+            if side == 's':
+                dist = AStar(node.state, i, HexConstants.MIN_STOP)
+                minus = min(minus, 1 / dist)
+            elif side == 'e':
+                dist = AStar(node.state, i, HexConstants.MIN_START)
+                minus = min(minus, 1 / dist)
+    return plus - minus
