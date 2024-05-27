@@ -4,6 +4,7 @@ module.exports = {
     content: [
         "./templates/*.html",
         "./static/src/*.js",
+        "./templates/*.html.j2"
     ],
     theme: {
         extend: {},
