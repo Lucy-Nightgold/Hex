@@ -84,7 +84,8 @@ def game():
 @app.route("/game/play/<case>")
 def play(case):
     if not controller.initiated_game:
-        return index()
+        return redirect("/")
+    case = int(case)
     try:
         controller.game.play_turn(case)
     except Exception as e:
