@@ -18,7 +18,8 @@ class Controller:
 
     def initialize(self, difficulty):
         if not self.initiated_game:
-            self.game = Game(difficulty)
+            difficulty_enum = Difficulty[difficulty.upper()]
+            self.game = Game(difficulty_enum)
             self.initiated_game = True
 
     def end(self):
