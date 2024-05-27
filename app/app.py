@@ -1,6 +1,7 @@
 from flask import Flask, Response, redirect
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from src.Difficulty import Difficulty
 from src.Game import Game
 
 env = Environment(
