@@ -16,7 +16,7 @@ class Game:
         old_state = self.tree.root.state
         if old_state[player_action] != NODE_STATE_EMPTY:
             raise Exception("space already occupied")
-        new_state = old_state[:player_action] + player_action + old_state[player_action + 1:]
+        new_state = old_state[:player_action] + str(player_action) + old_state[player_action + 1:]
         self.tree.select_next_root(new_state)
         if is_winning(new_state) == GameState.MAX_WIN:
             return GameState.MAX_WIN
