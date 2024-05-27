@@ -57,26 +57,26 @@ def history():
 @app.route("/game/init/<difficulty>")
 def init(difficulty):
     controller.initialize(get_difficulty_by_number(difficulty))
-    return game()
+    return redirect("/game")
 
 
 @app.route("/game/end")
 def end():
     controller.end()
-    return index()
+    return redirect("/")
 
 
 @app.route("/game/restart/<difficulty>")
 def restart(difficulty):
     controller.end()
     controller.initialize(get_difficulty_by_number(difficulty))
-    return game()
+    return redirect("/game")
 
 
 @app.route("/game")
 def game():
     if not controller.initiated_game:
-        return index()
+        return redirect("/")
     template = env.get_template("game.html.j2")
     return render_game()
 
