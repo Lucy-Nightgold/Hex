@@ -8,17 +8,21 @@ class Tree:
         self.root = root
         self.leafs = []
 
-    def expend(self, depth):
-        if depth == 0:
-            return
-        for node in self.leafs:
-            res = TreeManager.is_winning(node.state)
-            if res == GameState.UNFINISHED:
+    def expend(self):
+        def aux(nodes):
+            if not nodes:
+                return
+            node = nodes.pop(0)
+            if node.is_leaf and not node.is_ending:
                 node.is_leaf = False
                 successors_states = TreeManager.generate_next_node_state_list(node.state, 'm' if node.is_max else 'M')
                 for state in successors_states:
-                    child_node = Node(not node.is_max, False, 0, node, state)
-                    node.successors.append(TreeManager.expend_from_node(child_node, depth - 1, self))
+                    child_node = Node(not node.is_max, True, 0, node, state)
+                    child_node.is_ending = TreeManager.is_winning(child_node.state) != GameState.UNFINISHED
+                    node.successors.append(child_node)
+                return aux(nodes)
+            return aux(nodes + node.successors)
+        return aux([self.root])
 
     def is_winning(self):
         return TreeManager.is_winning(self.root.state)
