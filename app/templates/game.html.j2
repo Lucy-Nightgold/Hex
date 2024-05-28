@@ -5,9 +5,6 @@
 	<title>Jeu de Hex</title>
 	<link rel="stylesheet" type="text/css" href="/static/main.css">
 </head>
-<div hidden class="translate-x-[0vw] translate-x-[1vw] translate-x-[2vw] translate-x-[3vw] translate-x-[4vw]
-                   translate-x-[5vw] translate-x-[6vw] translate-x-[7vw] translate-x-[8vw] translate-x-[9vw]
-                   translate-x-[10vw]"></div>
     <body class="h-screen w-full inline-flex justify-center flex-col bg-gradient-to-b from-[#8ECAE6] to-[#FFB703]">
         <div class="h-[10%] border-[0.3vw] rounded-xl m-[1vw] inline-flex justify-between align-middle items-center
                     border-[#023047] px-[5vw]">
@@ -15,46 +12,47 @@
             <div class="inline-flex justify-around align-middle items-center gap-[5vw]">
                 <a id="welcomePageButton" href="/" class="cursor-pointer border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat']">Accueil</a>
                 <a href="/game/end" class="cursor-pointer border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat']">Stopper</a>
-                <select name="restart" id="restart" class="p-[0.5vw] border-none rounded-xl text-[1vw] bg-[#ffb703] font-['Montserrat'] font-bold">
-                    <option value="">Nouvelle partie</option>
-                    <option value="easy">Facile</option>
-                    <option value="medium">Normale</option>
-                    <option value="hard">Difficile</option>
+                <a id="restart_button" class="cursor-not-allowed border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat'] grayscale-[75%]"> Nouvelle partie </a>
+                <select id="select_restart_difficulty" name="restart" id="restart" class="p-[0.5vw] border-none rounded-xl text-[1vw] bg-[#ffb703] font-['Montserrat'] font-bold">
+                    <option value="">Difficulté</option>
+                    <option value="2">Facile</option>
+                    <option value="4">Normale</option>
+                    <option value="6">Difficile</option>
                 </select>
             </div>
         </div>
         <div class="h-[90%] w-full inline-flex align-middle justify-center items-center">
-            <div id="board" class="h-fit w-fit inline-flex flex-col -translate-x-[5vw] gap-[1vw]">
-                <svg viewBox="0 0 1700 100" class="w-[22vw]">
-                    <rect x="0" y="0" width="1700" height="100" fill="#219EBC" rx="20"/>
-                </svg>
-                <div class="inline-flex">
-                    <svg viewBox="0 0 100 1700" class="h-[22vw] -rotate-[26.5deg] translate-x-[2.7vw] translate-y-[0.4vw]">
-                        <rect x="0" y="0" width="100" height="1700" fill="#FB8500" rx="20"/>
-                    </svg>
-                    <div class="inline-flex flex-col -space-y-[0.6vw]">
-                    {% for i in range(11) %}
-                        <div class="inline-flex translate-x-[{{ i }}vw]">
-                         {% for j in range(11) %}
-                             <svg id="{{ j + i * 11 }}" viewBox="0 0 250 300" class="h-[2.5vw]">
-                                 <a href="/game/play/{{ j + i * 11 }}">
-                                 <polygon class="cursor-pointer" points="125,0 250,80 250,220 125,300 0,220 0,80" fill="white" stroke="black" stroke-width="0.3vw"/>
-                                 </a>
-                            </svg>
-                         {% endfor %}
-                        </div>
-                    {% endfor %}
-                    </div>
-                    <svg viewBox="0 0 100 1700" class="h-[22vw] -rotate-[26.5deg] translate-x-[7vw] -translate-y-[0.4vw]">
-                        <rect x="0" y="0" width="100" height="1700" fill="#FB8500" rx="20"/>
-                    </svg>
+            {% block board %}
+                <div id="board">
+                    {% include "board.html.j2" %}
                 </div>
-
-                <svg viewBox="0 0 1700 100" class="w-[22vw] translate-x-[11vw]">
-                    <rect x="0" y="0" width="1700" height="100" fill="#219EBC" rx="20"/>
-                </svg>
-            </div>
+            {% endblock %}
         </div>
+        <p>{{ winning_state }}</p>
+        {% if winning_state != 0 %}
+            <div class="absolute top-0 left-0 h-screen w-full">
+                <div class="z-10 h-full w-full  inline-flex justify-center align-middle items-center bg-[#023047C5]">
+                    <div class="inline-flex flex-col text-4xl gap-[2vw] font-bold justify-center items-center">
+                        {% if winning_state == -1 %}
+                            <p class="text-white">Vous avez malheuresement perdu...</p>
+                        {% else %}
+                            <p class="text-white">Bravo, vous avez gagné !!</p>
+                        {% endif %}
+                        <div class="inline-flex gap-[1vw]">
+                            <a id="welcomePageButton" href="/" class="cursor-pointer border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat']">Accueil</a>
+                            <a id="restart_button_end" class="cursor-not-allowed border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat'] grayscale-[75%]"> Nouvelle partie </a>
+                            <select id="select_restart_difficulty_end" name="restart" id="restart" class="p-[0.5vw] border-none rounded-xl text-[1vw] bg-[#ffb703] font-['Montserrat'] font-bold">
+                                <option value="">Difficulté</option>
+                                <option value="2">Facile</option>
+                                <option value="4">Normale</option>
+                                <option value="6">Difficile</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        {% endif %}
     </body>
+    <script src="/static/src/scripts/hex.js"></script>
 </html>
