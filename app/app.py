@@ -98,7 +98,7 @@ def render_game():
     template = env.get_template("game.html.j2")
     return template.render(
         game_state=controller.game.tree.root.state,
-        winning_state=controller.game.state
+        winning_state=controller.game.tree.is_winning().value
     )
 
 
