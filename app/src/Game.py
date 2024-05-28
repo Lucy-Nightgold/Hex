@@ -1,4 +1,4 @@
-from src.Algorithms import minimax
+from src.Algorithms import minimax, alphabeta
 from src.GameState import GameState
 from src.datastructure.HexConstants import NODE_STATE_EMPTY
 from src.datastructure.TreeManager import generate_tree, is_winning
@@ -25,7 +25,7 @@ class Game:
         min_h = float('inf')
         min_node = self.tree.root.successors[0]
         for n in self.tree.root.successors:
-            res = minimax(n)
+            res = alphabeta(n)
             if res <= min_h:
                 min_h = res
                 min_node = n

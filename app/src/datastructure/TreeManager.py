@@ -1,4 +1,5 @@
 import src.datastructure.HexConstants as HexConstants
+from src.Algorithms import heuristic, two_distance_heuristic
 from src.GameState import GameState
 from src.datastructure.tree.Node import Node
 from src.datastructure.tree.Tree import Tree
@@ -10,7 +11,7 @@ def expend_from_node(node, depth, tree):
         tree.leafs.append(node)
         node.is_leaf = True
         node.is_ending = res != GameState.UNFINISHED
-        node.e = 5 if res == GameState.MAX_WIN else -5 if res == GameState.MIN_WIN else 0
+        node.e = two_distance_heuristic(node)
         return node
     successors_states = generate_next_node_state_list(node.state, 'm' if node.is_max else 'M')
     for state in successors_states:
