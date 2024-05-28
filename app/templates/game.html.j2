@@ -1,12 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Jeu de Hex</title>
+	<meta charset="UTF-8">
+	<title>Jeu de Hex</title>
+	<link rel="stylesheet" type="text/css" href="/static/main.css">
 </head>
-<body>
-    <div id="board">
+    <body class="h-screen w-full inline-flex justify-center flex-col bg-gradient-to-b from-[#8ECAE6] to-[#FFB703]">
+        <div class="h-[10%] border-[0.3vw] rounded-xl m-[1vw] inline-flex justify-between align-middle items-center
+                    border-[#023047] px-[5vw]">
+            <p class="text-[2vw] font-['Montserrat'] font-bold">Hex</p>
+            <div class="inline-flex justify-around align-middle items-center gap-[5vw]">
+                <a id="welcomePageButton" href="/" class="cursor-pointer border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat']">Accueil</a>
+                <a href="/game/end" class="cursor-pointer border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat']">Stopper</a>
+                <a id="restart_button" class="cursor-not-allowed border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat'] grayscale-[75%]"> Nouvelle partie </a>
+                <select id="select_restart_difficulty" name="restart" id="restart" class="p-[0.5vw] border-none rounded-xl text-[1vw] bg-[#ffb703] font-['Montserrat'] font-bold">
+                    <option value="">Difficulté</option>
+                    <option value="2">Facile</option>
+                    <option value="4">Normale</option>
+                    <option value="6">Difficile</option>
+                </select>
+            </div>
+        </div>
+        <div class="h-[90%] w-full inline-flex align-middle justify-center items-center">
+            {% block board %}
+                <div id="board">
+                    {% include "board.html.j2" %}
+                </div>
+            {% endblock %}
+        </div>
+        <p>{{ winning_state }}</p>
+        {% if winning_state != 0 %}
+            <div class="absolute top-0 left-0 h-screen w-full">
+                <div class="z-10 h-full w-full  inline-flex justify-center align-middle items-center bg-[#023047C5]">
+                    <div class="inline-flex flex-col text-4xl gap-[2vw] font-bold justify-center items-center">
+                        {% if winning_state == -1 %}
+                            <p class="text-white">Vous avez malheuresement perdu...</p>
+                        {% else %}
+                            <p class="text-white">Bravo, vous avez gagné !!</p>
+                        {% endif %}
+                        <div class="inline-flex gap-[1vw]">
+                            <a id="welcomePageButton" href="/" class="cursor-pointer border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat']">Accueil</a>
+                            <a id="restart_button_end" class="cursor-not-allowed border-none bg-[#ffb703] p-[0.5vw] rounded-xl text-[1vw] font-bold font-['Montserrat'] grayscale-[75%]"> Nouvelle partie </a>
+                            <select id="select_restart_difficulty_end" name="restart" id="restart" class="p-[0.5vw] border-none rounded-xl text-[1vw] bg-[#ffb703] font-['Montserrat'] font-bold">
+                                <option value="">Difficulté</option>
+                                <option value="2">Facile</option>
+                                <option value="4">Normale</option>
+                                <option value="6">Difficile</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    </div>
-</body>
+        {% endif %}
+    </body>
+    <script src="/static/src/scripts/hex.js"></script>
 </html>

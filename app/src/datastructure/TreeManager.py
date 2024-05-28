@@ -15,7 +15,7 @@ def expend_from_node(node, depth, tree):
         return node
     successors_states = generate_next_node_state_list(node.state, 'm' if node.is_max else 'M')
     for state in successors_states:
-        if len(successors_states) > 0:
+        if len(successors_states) > 0 and node in tree.leafs:
             tree.leafs.remove(node)
         child_node = Node(not node.is_max, False, 0, node, state)
         node.successors.append(expend_from_node(child_node, depth - 1, tree))
@@ -50,21 +50,21 @@ def is_winning(state):
     def evaluation(list1, list2, stop):
         if not list1:
             return False
-        c = list1(0)
+        c = list1[0]
         if c in stop:
             return True
 
         def filter_neighbours(neighbour):
-            return neighbour not in list2 and state(c) == state(neighbour)
+            return neighbour not in list2 and state[c] == state[neighbour]
 
-        neighbours = filter(filter_neighbours, HexConstants.get_neighbours(c))
+        neighbours = list(filter(filter_neighbours, HexConstants.get_neighbours(c)))
         list2.append(list1.pop(0))
         return evaluation(list1 + neighbours, list2, stop)
 
-    for case in HexConstants.MAX_START:
+    for case in list(filter(lambda x: state[x] != HexConstants.NODE_STATE_EMPTY, HexConstants.MAX_START)):
         if evaluation([case], [], HexConstants.MAX_STOP):
             return GameState.MAX_WIN
-    for case in HexConstants.MIN_START:
+    for case in filter(lambda x: state[x] != HexConstants.NODE_STATE_EMPTY, HexConstants.MIN_START):
         if evaluation([case], [], HexConstants.MIN_STOP):
             return GameState.MIN_WIN
     return GameState.UNFINISHED

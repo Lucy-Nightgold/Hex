@@ -1,6 +1,7 @@
 from flask import Flask, Response, redirect
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from src.Difficulty import Difficulty, get_difficulty_by_number
 from src.Game import Game
 
 env = Environment(
@@ -55,27 +56,27 @@ def history():
 
 @app.route("/game/init/<difficulty>")
 def init(difficulty):
-    controller.initialize(difficulty)
-    return redirect(game())
+    controller.initialize(get_difficulty_by_number(difficulty))
+    return redirect("/game")
 
 
 @app.route("/game/end")
 def end():
     controller.end()
-    return redirect(index())
+    return redirect("/")
 
 
 @app.route("/game/restart/<difficulty>")
 def restart(difficulty):
     controller.end()
-    controller.initialize(difficulty)
-    return redirect(game())
+    controller.initialize(get_difficulty_by_number(difficulty))
+    return redirect("/game")
 
 
 @app.route("/game")
 def game():
     if not controller.initiated_game:
-        return index()
+        return redirect("/")
     template = env.get_template("game.html.j2")
     return render_game()
 
@@ -83,7 +84,8 @@ def game():
 @app.route("/game/play/<case>")
 def play(case):
     if not controller.initiated_game:
-        return index()
+        return redirect("/")
+    case = int(case)
     try:
         controller.game.play_turn(case)
     except Exception as e:
@@ -96,7 +98,7 @@ def render_game():
     template = env.get_template("game.html.j2")
     return template.render(
         game_state=controller.game.tree.root.state,
-        winning_state=controller.game.state
+        winning_state=controller.game.tree.is_winning().value
     )
 
 
