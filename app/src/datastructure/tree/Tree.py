@@ -1,3 +1,4 @@
+from src.Algorithms import heuristic, two_distance_heuristic
 from src.GameState import GameState
 import src.datastructure.TreeManager as TreeManager
 from src.datastructure.tree.Node import Node
@@ -19,6 +20,7 @@ class Tree:
                 for state in successors_states:
                     child_node = Node(not node.is_max, True, 0, node, state)
                     child_node.is_ending = TreeManager.is_winning(child_node.state) != GameState.UNFINISHED
+                    child_node.e = two_distance_heuristic(child_node)
                     node.successors.append(child_node)
                 return aux(nodes)
             return aux(nodes + node.successors)
