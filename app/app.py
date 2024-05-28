@@ -48,9 +48,9 @@ def examples():
     return template.render()
 
 
-@app.route("/history")
+@app.route("/historyAndRules")
 def history():
-    template = env.get_template("history.html.j2")
+    template = env.get_template("historyAndRules.html.j2")
     return template.render()
 
 
