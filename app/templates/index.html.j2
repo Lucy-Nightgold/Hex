@@ -4,8 +4,76 @@
     <meta charset="UTF-8">
     <title>Flask</title>
     <link rel="stylesheet" type="text/css" href="/static/main.css">
+	<style>
+        .selected {
+            border: 2px solid #000;
+        }
+        .deselected {
+            opacity: 50%;
+        }
+	</style>
 </head>
-<body>
-    <p class="text-4xl bg-amber-500 text-green-500">Hello flask !</p>
+<div hidden class="bg-red-600 bg-green-600 bg-yellow-600"></div>
+<body class="h-screen w-full bg-gradient-to-b from-[#8ECAE6] to-[#FFB703]">
+<img class="absolute size-[10%] object-contain ml-3" src="/static/img/logo-univ-rouen-normandie-noir.png"/>
+<div class="flex flex-col justify-between h-full">
+	<div>
+		<p class="text-7xl text-center w-full font-extrabold">
+			Jeu de Hex
+		</p>
+		<p class="text-4xl text-center w-full">
+			Projet de Théorie des Jeux
+		</p>
+	</div>
+	<div class="flex flex-col items-center justify-center flex-grow space-y-5">
+		<button id="play" class="hover:shadow-xl text-2xl text-center w-1/4 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-black">JOUER</button>
+		<div class="flex flex-row space-x-10 w-1/3 justify-center font-bold">
+			<button id="easy" class="hover:shadow-xl bg-green-600 hover:bg-green-700 text-white py-2 rounded p-5 selected">
+				Facile
+			</button>
+			<button id="medium" class="hover:shadow-xl bg-yellow-400 hover:bg-yellow-600 text-white py-2 rounded p-5 deselected">
+				Moyen
+			</button>
+			<button id="hard" class="hover:shadow-xl bg-red-600 hover:bg-red-700 text-white py-2 rounded p-5 deselected">
+				Difficile
+			</button>
+		</div>
+	</div>
+	<div class="flex justify-between p-5 font-bold">
+		<a class="hover:shadow-xl text-white border-solid border-orange-500 border-2 bg-orange-400 hover:bg-orange-500 p-2 rounded" href="/historyAndRules">Histoire et règles</a>
+		<div class="mt-5">Créé par Niels CAUCHOIS & Yohann DUCROQ</div>
+		<a class="hover:shadow-xl text-white border-solid border-orange-500 border-2 bg-orange-400 hover:bg-orange-500 p-2 rounded" href="/examples">Exemples de parties</a>
+	</div>
+</div>
+<script>
+	let levelSelected = 2
+
+
+	function selectLevel(level, ind) {
+		levelSelected = ind
+		document.querySelector(".selected").classList.add("deselected");
+		document.querySelector(".selected").classList.remove("selected");
+		document.getElementById(level).classList.add("selected");
+		document.getElementById(level).classList.remove("deselected");
+	}
+
+
+	document.getElementById("easy").addEventListener("click", function() {
+		selectLevel("easy", 2);
+	});
+	document.getElementById("medium").addEventListener("click", function() {
+		selectLevel("medium", 4);
+	});
+	document.getElementById("hard").addEventListener("click", function() {
+		selectLevel("hard", 6);
+	});
+
+	document.getElementById("play").addEventListener("click", function() {
+		window.location.href = "/game/init/" + levelSelected
+	});
+</script>
+
+
+
 </body>
 </html>
