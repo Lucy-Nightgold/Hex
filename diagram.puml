@@ -9,22 +9,22 @@ package app {
 
         class index< <U+002F> >
 
-        class rules < <U+002F>rules >
+        class board
 
         class examples < <U+002F>examples>
 
-        class history < <U+002F>history>
+        class historyAndRules < <U+002F>history>
 
         class Game < <U+002F>game>
 
         App --> index
-        App --> rules
         App --> examples
-        App --> history
+        App --> historyAndRules
         App --> Game
+        Game --> board
     }
 
-    note top of templates: templates are html files
+    note top of templates: templates are html.j2 files
 
     package src {
 
@@ -41,15 +41,16 @@ package app {
 
                 class Tree {
                     Node[] leafs
-                    + boolean isComplete()
-                    + void expend(int depth)
-                    + int isWinning()
-                    + void selectNextRoot(String state)
+                    Node root
+                    + void expend()
+                    + int is_winning()
+                    + void select_next_root(String state)
                 }
 
                 class Node {
-                    boolean isMax
-                    boolean isLeaf
+                    boolean is_max
+                    boolean is_leaf
+                    boolean is_ending
                     float e
                     Node[] successors
                     Node pred
@@ -60,18 +61,23 @@ package app {
             }
 
             class TreeManager {
-                + createTree(int depth)
+                + expend_from_node(Node node,int depth,Tree tree)
+                + generate_tree(int depth)
+                + generate_next_node_state_list(String list, Char player_char)
+                + is_winning(state)
             }
 
             class HexConstants {
-                dict caseNeighbours
-                int[] MaxStart
-                int[] MaxEnd
-                int[] MinStart
-                int[] MaxEnd
-                char NodeStateMax
-                char NodeStateMin
-                char NodeStateEmpty
+                int[] MAX_START
+                int[] MAX_STOP
+                int[] MIN_START
+                int[] MIN_STOP
+                int[] CASES
+                int CASES_NB
+                char NODE_STATE_MAX
+                char NODE_STATE_MIN
+                char NODE_STATE_EMPTY
+                + get_neighbours(int case)
             }
 
             TreeManager ..> Tree
