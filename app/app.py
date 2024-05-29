@@ -36,12 +36,6 @@ def index():
     return template.render()
 
 
-@app.route("/rules")
-def rules():
-    template = env.get_template("rules.html.j2")
-    return template.render()
-
-
 @app.route("/examples")
 def examples():
     template = env.get_template("examples.html.j2")
